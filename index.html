@@ -73,7 +73,85 @@
             border-bottom: 2px solid var(--accent);
             color: var(--accent);
         }
+        .full-width {
+            grid-column: 1 / -1;
+            border: 1px solid var(--text);
+            border-top: 2px solid var(--text);
+        }
 
+        /* INFO + LISTEN nebeneinander (Desktop), gestapelt (Mobile) */
+        .content-split {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr;
+            min-height: 0;
+        }
+
+        @media (min-width: 768px) {
+            .content-split {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .content-split > .box:first-child {
+                border-right: 2px solid var(--text);
+            }
+        }
+
+        .listen-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            margin-bottom: 28px;
+        }
+
+        .listen-embed-wrap {
+            display: none;
+            margin-top: 24px;
+        }
+
+        .listen-embed-wrap.is-active {
+            display: block;
+        }
+
+        .listen-embed {
+            border: 2px solid var(--text);
+            background: var(--bg);
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .listen-embed + .listen-embed {
+            margin-top: 20px;
+        }
+
+        .listen-embed iframe {
+            display: block;
+            width: 100%;
+            height: 380px;
+            border: 0;
+        }
+
+        @media (min-width: 768px) and (max-width: 1100px) {
+            .listen-embed iframe {
+                height: 320px;
+            }
+        }
+
+        .listen-link-btn {
+            display: inline-block;
+            background: none;
+            border: none;
+            font: inherit;
+            text-transform: inherit;
+            letter-spacing: inherit;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .listen-link-btn.is-active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
         .footer {
             grid-column: 1 / -1;
             padding: 20px;
@@ -86,8 +164,8 @@
 <body>
 
     <div class="grid-container">
-        <!-- Box 1: Das Branding -->
-        <div class="box">
+        <!-- Branding: volle Breite -->
+        <div class="box full-width">
             <div class="logo">0<br>D<br><span class="accent-text">C</span></div>
             <div>
                 <p>Digital Artist // Portfolio 2026</p>
@@ -95,27 +173,69 @@
             </div>
         </div>
 
-        <!-- Box 2: About & Contact -->
-        <div class="box" style="background-color: #f0f0f0;">
-            <div>
-                <h2>INFO</h2>
-                <p>0dc ist ein Projekt zur Erforschung digitaler Ästhetik.</p>
-                <p>Minimalismus ist nicht das Fehlen von Etwas, sondern die perfekte Menge von Nichts.</p>
+        <!-- INFO | LISTEN: zweispaltig ab Tablet -->
+        <div class="content-split">
+            <div class="box" style="background-color: #f0f0f0;">
+                <div>
+                    <h2>INFO</h2>
+                    <p>0dc ist ein Projekt zur Erforschung digitaler Ästhetik.</p>
+                    <p>Minimalismus ist nicht das Fehlen von Etwas, sondern die perfekte Menge von Nichts.</p>
+                </div>
+
+                <div style="margin-top: 60px;">
+                    <h2>CONTACT</h2>
+                    <a href="mailto:0dc@0dc.space" class="contact-link">0dc@0dc.space</a>
+                </div>
             </div>
 
-            <div style="margin-top: 60px;">
-                <h2>CONTACT</h2>
-                <a href="mailto:0dc@0dc.space" class="contact-link">0dc@0dc.space</a>
-                <a href="https://instagram.com/0dc0dc0dc" class="contact-link">Instagram</a>
-                <a href="#" class="contact-link">Soundcloud</a>
+            <div class="box" style="background-color: #ffffff;">
+                <div>
+                    <h2>LISTEN</h2>
+                    <div class="listen-links">
+                        <button type="button" class="contact-link listen-link-btn is-active" style="margin-top: 0;" data-listen="spotify" aria-pressed="true">Spotify</button>
+                        <button type="button" class="contact-link listen-link-btn" style="margin-top: 0;" data-listen="soundcloud" aria-pressed="false">SoundCloud</button>
+                        <a href="https://instagram.com/0dc0dc0dc" class="contact-link" style="margin-top: 0;" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    </div>
+                    <div class="listen-embed-wrap is-active" id="listen-embed-spotify" role="region" aria-label="Spotify Player">
+                        <div class="listen-embed">
+                            <iframe title="0dc auf Spotify" loading="lazy" allow="encrypted-media; clipboard-write" src="https://open.spotify.com/embed/artist/3WW2Yufw8hh34ZX4JkS9OK?utm_source=generator"></iframe>
+                        </div>
+                    </div>
+                    <div class="listen-embed-wrap" id="listen-embed-soundcloud" role="region" aria-label="SoundCloud Player">
+                        <div class="listen-embed">
+                            <iframe title="0dc auf SoundCloud" loading="lazy" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/0dc0dc0dc&color=%23ff0000&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            © 2026 0DC.SPACE — ALL RIGHTS RESERVED BY ODYSSEE RECORDS.
+            © 2076 0DC.SPACE — ALL RIGHTS RESERVED BY ODYSSEE RECORDS.
         </div>
     </div>
 
+    <script>
+        (function () {
+            var panels = {
+                spotify: document.getElementById('listen-embed-spotify'),
+                soundcloud: document.getElementById('listen-embed-soundcloud')
+            };
+            document.querySelectorAll('.listen-link-btn[data-listen]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var key = btn.getAttribute('data-listen');
+                    document.querySelectorAll('.listen-link-btn[data-listen]').forEach(function (b) {
+                        var on = b === btn;
+                        b.classList.toggle('is-active', on);
+                        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+                    });
+                    Object.keys(panels).forEach(function (k) {
+                        panels[k].classList.toggle('is-active', k === key);
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
