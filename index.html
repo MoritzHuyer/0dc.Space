@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the Odyssey
-    
-    </title>
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="0dc — digitale Ästhetik, Musik und Portfolio. Based in the Web.">
+    <link rel="canonical" href="https://0dc.space/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://0dc.space/">
+    <meta property="og:title" content="0DC.SPACE — Digital Artist // Portfolio">
+    <meta property="og:description" content="0dc — digitale Ästhetik, Musik und Portfolio. Based in the Web.">
+    <meta property="og:image" content="https://0dc.space/og.svg">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="de_DE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="0DC.SPACE — Digital Artist // Portfolio">
+    <meta name="twitter:description" content="0dc — digitale Ästhetik, Musik und Portfolio. Based in the Web.">
+    <meta name="twitter:image" content="https://0dc.space/og.svg">
+    <title>0DC.SPACE — Digital Artist // Portfolio</title>
     <style>
         
         /* 032c Vibe: Hartes Schwarz-Weiß mit Roten Akzenten */
@@ -13,9 +27,15 @@
             --bg: #ffffff;
             --text: #000000;
             --accent: #ff0000; /* Das klassische Rot */
+            --grain-opacity: 0.12;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        ::selection {
+            background: var(--text);
+            color: var(--bg);
+        }
 
         body {
             background-color: var(--bg);
@@ -25,11 +45,29 @@
             letter-spacing: 1px;
         }
 
+        /*
+         * Filmkorn: ohne mix-blend-mode — multiply/soft-light wirkt auf #fff oft fast unsichtbar.
+         * Halbtransparente Graustufen-Textur + contrast() macht das Korn auf allen Flächen lesbar.
+         */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: var(--grain-opacity);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' width='256' height='256'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+            filter: contrast(220%);
+        }
+
         /* Das Raster-Layout */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr;
-            min-height: 120vh;
+            min-height: 100vh;
+            align-content: start; /* keine Zeilen-Streckung bei min-height — sonst space-between im Hero riesige Lücken */
             border: 2px solid var(--text);
         }
 
@@ -47,18 +85,60 @@
             justify-content: space-between;
         }
 
-        /* Logo Sektion */
-        .logo {
-            font-size: 8rem;
-            font-weight: 900;
-            line-height: 0.8;
-            word-break: break-all;
-        }
-
+        /* Logo / Hero: kompakter — Zeilen-Stapel nur mobil; ab Tablet eine Zeile, weniger Höhe */
         .accent-text { color: var(--accent); }
 
+        .logo {
+            display: flex;
+            flex-direction: column;
+            font-size: clamp(2.75rem, 14vw, 4.75rem);
+            font-weight: 900;
+            line-height: 0.82;
+        }
+
+        .logo span {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                flex-direction: row;
+                align-items: baseline;
+                gap: 0.06em;
+                line-height: 1;
+                font-size: clamp(3.25rem, 7.5vw, 5.25rem);
+            }
+
+            .logo span {
+                display: inline;
+            }
+        }
+
+        .hero {
+            justify-content: flex-start;
+            gap: 1.25rem;
+            padding: 24px 28px;
+        }
+
+        .hero .hero-tagline p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 2rem;
+                padding: 26px 40px 30px;
+            }
+        }
+
         /* Content Sektionen */
+        h1.logo { margin: 0; }
+
         h2 { font-size: 1.5rem; margin-bottom: 20px; font-weight: 900; }
+        h3 { font-size: 1.5rem; margin-bottom: 20px; font-weight: 900; }
         p { font-size: 1rem; line-height: 1.5; margin-bottom: 10px; }
 
         .contact-link {
@@ -75,6 +155,37 @@
             border-bottom: 2px solid var(--accent);
             color: var(--accent);
         }
+
+        .contact-link:focus-visible,
+        .listen-link-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            color: var(--accent);
+        }
+
+        .issue-line {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 20px;
+            padding: 10px 40px;
+            font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            line-height: 1.3;
+            border-bottom: 1px solid var(--text);
+            text-transform: uppercase;
+        }
+
+        .issue-line span { opacity: 0.85; }
+
+        .issue-line .issue-accent {
+            color: var(--accent);
+            opacity: 1;
+        }
+
         .full-width {
             grid-column: 1 / -1;
             border: 1px solid var(--text);
@@ -164,15 +275,39 @@
             text-align: center;
             border-top: 2px solid var(--text);
         }
+
+        @media print {
+            body::after {
+                display: none !important;
+            }
+
+            .contact-link:focus-visible,
+            .listen-link-btn:focus-visible {
+                outline: none;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <main id="main">
     <div class="grid-container">
+        <div class="issue-line" aria-hidden="true">
+            <span class="issue-accent">0DC</span>
+            <span>—</span>
+            <span>WEB</span>
+            <span>—</span>
+            <span>2026</span>
+            <span>—</span>
+            <span>ISSUE 001</span>
+        </div>
+
         <!-- Branding: volle Breite -->
-        <div class="box full-width">
-            <div class="logo">0<br>D<br><span class="accent-text">C</span></div>
-            <div>
+        <div class="box full-width hero">
+            <h1 class="logo">
+                <span>0</span><span>D</span><span class="accent-text">C</span>
+            </h1>
+            <div class="hero-tagline">
                 <p>Digital Artist // Portfolio 2026</p>
                 <p>Based in the Web.</p>
             </div>
@@ -188,7 +323,7 @@
                 </div>
 
                 <div style="margin-top: 60px;">
-                    <h2>CONTACT</h2>
+                    <h3>CONTACT</h3>
                     <a href="mailto:0dc@0dc.space" class="contact-link">0dc@0dc.space</a>
                 </div>
             </div>
@@ -197,16 +332,16 @@
                 <div>
                     <h2>LISTEN</h2>
                     <div class="listen-links">
-                        <button type="button" class="contact-link listen-link-btn is-active" style="margin-top: 0;" data-listen="spotify" aria-pressed="true">Spotify</button>
-                        <button type="button" class="contact-link listen-link-btn" style="margin-top: 0;" data-listen="soundcloud" aria-pressed="false">SoundCloud</button>
+                        <button type="button" class="contact-link listen-link-btn is-active" style="margin-top: 0;" data-listen="soundcloud" aria-pressed="true">SoundCloud</button>
+                        <button type="button" class="contact-link listen-link-btn" style="margin-top: 0;" data-listen="spotify" aria-pressed="false">Spotify</button>
                         <a href="https://instagram.com/0dc0dc0dc" class="contact-link" style="margin-top: 0;" target="_blank" rel="noopener noreferrer">Instagram</a>
                     </div>
-                    <div class="listen-embed-wrap is-active" id="listen-embed-spotify" role="region" aria-label="Spotify Player">
+                    <div class="listen-embed-wrap" id="listen-embed-spotify" role="region" aria-label="Spotify Player">
                         <div class="listen-embed">
                             <iframe title="0dc auf Spotify" loading="lazy" allow="encrypted-media; clipboard-write" src="https://open.spotify.com/embed/artist/3WW2Yufw8hh34ZX4JkS9OK?utm_source=generator"></iframe>
                         </div>
                     </div>
-                    <div class="listen-embed-wrap" id="listen-embed-soundcloud" role="region" aria-label="SoundCloud Player">
+                    <div class="listen-embed-wrap is-active" id="listen-embed-soundcloud" role="region" aria-label="SoundCloud Player">
                         <div class="listen-embed">
                             <iframe title="0dc auf SoundCloud" loading="lazy" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/0dc0dc0dc&color=%23ff0000&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                         </div>
@@ -220,6 +355,7 @@
             © 2026 0DC.SPACE — ALL RIGHTS RESERVED BY ODYSSEE RECORDS.
         </div>
     </div>
+    </main>
 
     <script>
         (function () {
