@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5e000">
+    <meta name="robots" content="noindex">
+    <title>0DC — SLAB (alternate layout)</title>
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --paper: #f5e000;
+            --mute: #e8dc00;
+            --line: 6px solid var(--ink);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
+        body {
+            min-height: 100%;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace;
+            font-size: 15px;
+            line-height: 1.45;
+        }
+        a { color: inherit; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border: var(--line);
+        }
+        th, td {
+            border: 3px solid var(--ink);
+            vertical-align: top;
+            padding: 0;
+        }
+        th {
+            background: var(--ink);
+            color: var(--paper);
+            font-size: clamp(2.5rem, 12vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+            padding: 16px 12px 20px;
+            text-align: left;
+        }
+        th .accent { color: #ff2a2a; }
+        .band {
+            display: block;
+            font-size: 0.55rem;
+            letter-spacing: 0.35em;
+            margin-top: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .cell-pad { padding: 18px 16px 22px; }
+        h2 {
+            font-size: 0.7rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border-bottom: 3px solid var(--ink);
+            padding-bottom: 6px;
+        }
+        p { margin-bottom: 12px; max-width: 52ch; }
+        .links a, .links button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            padding: 12px 10px;
+            border: none;
+            border-bottom: 3px solid var(--ink);
+            background: var(--mute);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .links a:last-child, .links button:last-of-type { border-bottom: none; }
+        .links button.is-on {
+            background: var(--ink);
+            color: var(--paper);
+        }
+        .embed {
+            display: none;
+            border-top: var(--line);
+            background: #fff;
+        }
+        .embed.on { display: block; }
+        .embed iframe {
+            display: block;
+            width: 100%;
+            height: min(420px, 55vh);
+            border: 0;
+        }
+        .foot {
+            padding: 14px 16px;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--ink);
+            color: var(--paper);
+        }
+        .foot a { color: #ff2a2a; }
+    </style>
+</head>
+<body>
+
+<table role="presentation">
+    <tr>
+        <th colspan="2">
+            0D<span class="accent">C</span>
+            <span class="band">producer / artist — slab layout</span>
+        </th>
+    </tr>
+    <tr>
+        <td class="cell-pad" style="width: 42%; background: #fff;">
+            <h2>Info</h2>
+            <p style="margin-bottom: 0;">0dc — I'm 17, from Germany. I produce music. Streams below; <a href="mailto:0dc@0dc.space" style="text-decoration: underline; text-underline-offset: 4px;">0dc@0dc.space</a></p>
+        </td>
+        <td class="cell-pad links" style="width: 58%; background: var(--mute); padding: 0;">
+            <h2 class="cell-pad" style="margin:0;border-bottom:3px solid var(--ink);">Listen</h2>
+            <button type="button" class="tab" data-t="sc" aria-pressed="true">SoundCloud</button>
+            <button type="button" class="tab" data-t="sp" aria-pressed="false">Spotify</button>
+            <a href="https://instagram.com/0dc0dc0dc" target="_blank" rel="noopener noreferrer">Instagram →</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding:0;border:none;">
+            <div class="embed on" id="e-sc">
+                <iframe title="SoundCloud" loading="lazy" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/0dc0dc0dc&color=%23000000&auto_play=false&hide_related=true&show_user=true&show_teaser=false&visual=true"></iframe>
+            </div>
+            <div class="embed" id="e-sp">
+                <iframe title="Spotify" loading="lazy" allow="encrypted-media; clipboard-write" src="https://open.spotify.com/embed/artist/3WW2Yufw8hh34ZX4JkS9OK?utm_source=generator"></iframe>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="foot">
+            © 2026 odyssee / 0dc — <a href="index.html">← back to main site</a>
+        </td>
+    </tr>
+</table>
+
+<script>
+(function () {
+    var sc = document.getElementById('e-sc');
+    var sp = document.getElementById('e-sp');
+    var tabs = document.querySelectorAll('.tab');
+    function set(which) {
+        sc.classList.toggle('on', which === 'sc');
+        sp.classList.toggle('on', which === 'sp');
+        tabs.forEach(function (t) {
+            var on = t.getAttribute('data-t') === which;
+            t.classList.toggle('is-on', on);
+            t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    }
+    tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+            set(t.getAttribute('data-t'));
+        });
+    });
+})();
+</script>
+</body>
+</html>
