@@ -1,180 +1,344 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta name="description" content="0dc0dc0dc — static. Digital noise, signal loss, industrial minimalism.">
-  <title>STATIC — 0dc0dc0dc</title>
+  <meta name="description" content="staticstaticstatic — album project by 0dc. Interference as interface. Digital artifact.">
+  <title>staticstaticstatic — 0dc</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var key = "0dc-theme";
+      var saved = localStorage.getItem(key);
+      var theme = saved === "light" || saved === "dark" ? saved : "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="noise-canvas" class="noise-canvas" aria-hidden="true"></canvas>
-  <div class="scanlines" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
 
-  <div class="stream stream--top" aria-hidden="true">
-    <div class="stream__inner">
-      <span class="stream__text" id="stream-a"></span>
-      <span class="stream__text" id="stream-b" aria-hidden="true"></span>
+  <!-- Grain + scanline overlays -->
+  <canvas id="grain-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- TOP TICKER -->
+  <div class="ticker ticker--top" aria-hidden="true">
+    <div class="ticker__track">
+      <div class="ticker__segment">
+        <span class="ticker__item">/dev/static00.raw</span>
+        <span class="ticker__item">./signal_loss.wav</span>
+        <span class="ticker__item ticker__item--alert">LOOKUP 0dc0dc0dc</span>
+        <span class="ticker__item">buffer underrun</span>
+        <span class="ticker__item">SIG_NOISE // 0xDC</span>
+        <span class="ticker__item">/mnt/odyssee/staticstaticstatic.flac</span>
+        <span class="ticker__item">ERR_SYNC_LOST</span>
+        <span class="ticker__item">./artifacts/interference.bin</span>
+        <span class="ticker__item">CHANNEL_STATIC // NO_CARRIER</span>
+        <span class="ticker__item">read() :: 0 bytes expected</span>
+      </div>
+      <div class="ticker__segment" aria-hidden="true">
+        <span class="ticker__item">/dev/static00.raw</span>
+        <span class="ticker__item">./signal_loss.wav</span>
+        <span class="ticker__item ticker__item--alert">LOOKUP 0dc0dc0dc</span>
+        <span class="ticker__item">buffer underrun</span>
+        <span class="ticker__item">SIG_NOISE // 0xDC</span>
+        <span class="ticker__item">/mnt/odyssee/staticstaticstatic.flac</span>
+        <span class="ticker__item">ERR_SYNC_LOST</span>
+        <span class="ticker__item">./artifacts/interference.bin</span>
+        <span class="ticker__item">CHANNEL_STATIC // NO_CARRIER</span>
+        <span class="ticker__item">read() :: 0 bytes expected</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM TICKER -->
+  <div class="ticker ticker--bottom" aria-hidden="true">
+    <div class="ticker__track">
+      <div class="ticker__segment">
+        <span class="ticker__item">staticstaticstatic.sys</span>
+        <span class="ticker__item">0dc@0dc.space</span>
+        <span class="ticker__item">FRAME_DROP :: 47%</span>
+        <span class="ticker__item">/proc/noise/entropy_high</span>
+        <span class="ticker__item ticker__item--alert">WHITE_NOISE_STREAM</span>
+        <span class="ticker__item">./cache/artifact_017.de</span>
+        <span class="ticker__item">ODYSSEE_RECORDS // 2026</span>
+        <span class="ticker__item">ioctl(STATIC, SET_GLITCH)</span>
+        <span class="ticker__item">/usr/share/instagram</span>
+        <span class="ticker__item">NO_CARGO_REQUIRED</span>
+      </div>
+      <div class="ticker__segment" aria-hidden="true">
+        <span class="ticker__item">staticstaticstatic.sys</span>
+        <span class="ticker__item">0dc@0dc.space</span>
+        <span class="ticker__item">FRAME_DROP :: 47%</span>
+        <span class="ticker__item">/proc/noise/entropy_high</span>
+        <span class="ticker__item ticker__item--alert">WHITE_NOISE_STREAM</span>
+        <span class="ticker__item">./cache/artifact_017.de</span>
+        <span class="ticker__item">ODYSSEE_RECORDS // 2026</span>
+        <span class="ticker__item">ioctl(STATIC, SET_GLITCH)</span>
+        <span class="ticker__item">/usr/share/instagram</span>
+        <span class="ticker__item">NO_CARGO_REQUIRED</span>
+      </div>
     </div>
   </div>
 
   <div class="shell">
-    <header class="mast">
-      <div class="mast__left mono">SIG_0xDC // CH-STATIC // NO_SYNC</div>
-      <div class="mast__right mono"><time id="utc">--:--:--</time> UTC</div>
-    </header>
 
-    <main class="matrix">
-      <section class="cell cell--hero" aria-labelledby="t-static">
-        <p class="cell__eyebrow mono">FIELD_RECORD // 001</p>
-        <h1 class="mega" id="t-static">STATIC</h1>
-        <p class="cell__sub mono">interference as interface — digital artifact</p>
-      </section>
-
-      <section class="cell cell--handle" aria-label="Artist handle">
-        <p class="cell__label mono">HANDLE_RAW</p>
-        <p class="brand-glitch mono" id="glitch-brand" title="hover: signal break">
-          <span class="g">0</span><span class="g">d</span><span class="g">c</span><span class="g">0</span><span class="g">d</span><span class="g">c</span><span class="g">0</span><span class="g">d</span><span class="g">c</span>
-        </p>
-        <p class="cell__meta mono">producer / DE / 17</p>
-      </section>
-
-      <section class="cell cell--statement">
-        <div class="statement__block">
-          <p class="mono statement__tag">[ INPUT ]</p>
-          <p class="statement__body">Noise isn’t empty — it’s what’s left when the message almost survives. This page is the same: loud type, quiet intent, one stream.</p>
-        </div>
-      </section>
-
-      <section class="cell cell--player" aria-labelledby="player-h">
-        <div class="player-head">
-          <h2 class="mono player-h" id="player-h">AUDIO_BUFFER</h2>
-          <span class="mono player-flag">LIVE_EMBED</span>
-        </div>
-        <div class="player-shell">
-          <div class="player-shell__mark mono">SC</div>
-          <div class="player-shell__frame">
-            <iframe title="0dc on SoundCloud" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/0dc0dc0dc&color=%23ff0000&auto_play=false&hide_related=true&show_user=true&show_teaser=false&visual=true" loading="lazy" allow="autoplay"></iframe>
-          </div>
-        </div>
-      </section>
-
-      <section class="cell cell--routes">
-        <p class="cell__label mono">EXTERNAL_BUS</p>
-        <ul class="routes mono">
-          <li><a href="https://instagram.com/0dc0dc0dc" target="_blank" rel="noopener noreferrer">/usr/share/instagram →</a></li>
-          <li><a href="https://open.spotify.com/intl-de/artist/3WW2Yufw8hh34ZX4JkS9OK" target="_blank" rel="noopener noreferrer">/mnt/spotify/artist</a></li>
-          <li><a href="mailto:0dc@0dc.space">mailto:0dc@0dc.space</a></li>
-        </ul>
-      </section>
-    </main>
-
-    <footer class="foot mono">
-      <span>© 2026 // 0DC0DC0DC // ODYSSEE_RECORDS // NO_CARGO_REQUIRED</span>
-    </footer>
-  </div>
-
-  <div class="stream stream--bottom" aria-hidden="true">
-    <div class="stream__inner stream__inner--reverse">
-      <span class="stream__text" id="stream-c"></span>
-      <span class="stream__text" id="stream-d" aria-hidden="true"></span>
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <p class="masthead__sig">SIG_0xDC <span>//</span> CH-STATIC <span>//</span> NO_SYNC</p>
+    <div class="masthead__controls">
+      <button
+        type="button"
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Zu Light Mode wechseln"
+        aria-pressed="true">
+        <span class="theme-toggle__prefix">MODE</span>
+        <span class="theme-toggle__state" id="theme-state">DARK</span>
+      </button>
+      <p class="masthead__clock">
+        <span class="masthead__clock-label">UTC</span>
+        <time id="utc-clock" datetime="">--:--:--</time>
+      </p>
     </div>
+  </header>
+
+  <!-- MATRIX -->
+  <main class="matrix">
+
+    <!-- HERO -->
+    <section class="cell cell--hero" aria-labelledby="hero-title">
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__glitch hero__glitch--red" aria-hidden="true">STATIC</span>
+        <span class="hero__glitch hero__glitch--ghost" aria-hidden="true">STATIC</span>
+        <span class="hero__glitch-main">STATIC</span>
+      </h1>
+      <p class="hero__subtitle">interference as interface — digital artifact</p>
+      <p class="hero__meta">album :: staticstaticstatic</p>
+    </section>
+
+    <!-- HANDLE -->
+    <section class="cell cell--handle">
+      <p class="handle__id" id="handle-glitch" data-text="0dc0dc0dc" tabindex="0">0dc0dc0dc</p>
+      <p class="handle__meta">producer / DE / 17</p>
+      <div class="handle__project">
+        <strong>staticstaticstatic</strong>
+        release project — 0dc
+      </div>
+    </section>
+
+    <!-- STATEMENT -->
+    <section class="cell cell--statement">
+      <h2 class="statement__label">[ INPUT ]</h2>
+      <div class="statement__body">
+        <p>
+          Static is not absence. It is excess — information without syntax,
+          signal refusing to resolve. Between stations, the air holds every
+          frequency at once: a democracy of noise.
+        </p>
+        <p>
+          <em>staticstaticstatic</em> treats interference as interface. Each
+          track is a captured rupture: buffer underruns, lookup failures,
+          white heat on the channel. What remains is not melody but artifact —
+          proof that something was trying to transmit.
+        </p>
+        <p>
+          Listen through the grain. The message is in the failure.
+        </p>
+      </div>
+    </section>
+
+    <!-- AUDIO BUFFER -->
+    <section class="cell cell--audio" aria-label="SoundCloud audio buffer">
+      <div class="audio__rail" aria-hidden="true">SC</div>
+      <div class="audio__embed">
+        <iframe
+          title="0dc @0dc0dc0dc on SoundCloud"
+          width="100%"
+          height="450"
+          scrolling="no"
+          frameborder="no"
+          allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/0dc0dc0dc&color=%23e30613&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- EXTERNAL BUS -->
+    <nav class="cell cell--bus" aria-label="External data routes">
+      <p class="bus__header">EXTERNAL_BUS</p>
+      <ul class="bus__list">
+        <li>
+          <a class="bus__link" href="https://instagram.com/0dc0dc0dc" target="_blank" rel="noopener noreferrer">
+            /usr/share/instagram
+          </a>
+        </li>
+        <li>
+          <a class="bus__link" href="https://open.spotify.com/intl-de/artist/3WW2Yufw8hh34ZX4JkS9OK?si=e7vH5_vwQjK-2z26Z2D46A" target="_blank" rel="noopener noreferrer">
+            /mnt/spotify/artist
+          </a>
+        </li>
+        <li>
+          <a class="bus__link" href="mailto:0dc@0dc.space">
+            mailto:0dc@0dc.space
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer">
+  © 2026 // 0DC0DC0DC // ODYSSEE_RECORDS // NO_CARGO_REQUIRED
+  </footer>
+
   </div>
 
   <script>
-(function () {
-  var FRAGMENTS = [
-    "/dev/static00.raw", "./signal_loss.wav", "0xDC_NULL", "/var/log/interference.log",
-    "// SYNC_DROP //", "../noise/_fragment.hex", "SIGINT_HANDLER", "/mnt/album/STATIC.bin",
-    "checksum: FAIL", "./.cache/glitchframe_", "IRQ_AUDIO_OVERFLOW", "/proc/silence/0",
-    "LOOKUP 0dc0dc0dc", "// EOF //", "_THRUM_STATIC_", "/sys/class/signal/dead",
-    "buffer underrun", "H_SYNC: 0", "VBLANK_SKIP", "./tracks/white_hiss.flac"
-  ];
+    (function () {
+      "use strict";
 
-  function buildStream() {
-    var out = [];
-    for (var i = 0; i < 24; i++) {
-      out.push(FRAGMENTS[Math.floor(Math.random() * FRAGMENTS.length)]);
-    }
-    return "  //  " + out.join("  ·  ") + "  //  ";
-  }
+      /* UTC Clock */
+      var clockEl = document.getElementById("utc-clock");
 
-  function fillStreams() {
-    var a = document.getElementById("stream-a");
-    var b = document.getElementById("stream-b");
-    var c = document.getElementById("stream-c");
-    var d = document.getElementById("stream-d");
-    var s1 = buildStream() + buildStream();
-    var s2 = buildStream() + buildStream();
-    if (a) a.textContent = s1;
-    if (b) b.textContent = s1;
-    if (c) c.textContent = s2;
-    if (d) d.textContent = s2;
-  }
-  fillStreams();
-  setInterval(fillStreams, 14000);
+      function pad(n) {
+        return n < 10 ? "0" + n : String(n);
+      }
 
-  function utcClock() {
-    var el = document.getElementById("utc");
-    if (!el) return;
-    var d = new Date();
-    function z(n) { return n < 10 ? "0" + n : "" + n; }
-    el.textContent = z(d.getUTCHours()) + ":" + z(d.getUTCMinutes()) + ":" + z(d.getUTCSeconds());
-  }
-  utcClock();
-  setInterval(utcClock, 1000);
+      function tick() {
+        var now = new Date();
+        var h = pad(now.getUTCHours());
+        var m = pad(now.getUTCMinutes());
+        var s = pad(now.getUTCSeconds());
+        var iso = now.toISOString();
+        clockEl.textContent = h + ":" + m + ":" + s;
+        clockEl.setAttribute("datetime", iso);
+      }
 
-  var canvas = document.getElementById("noise-canvas");
-  var brand = document.getElementById("glitch-brand");
-  if (brand) {
-    brand.addEventListener("mouseenter", function () { brand.classList.add("is-active"); });
-    brand.addEventListener("mouseleave", function () { brand.classList.remove("is-active"); });
-  }
+      tick();
+      setInterval(tick, 1000);
 
-  if (!canvas) return;
-  var ctx = canvas.getContext("2d", { alpha: true });
-  var w = 0, h = 0, buf = null, tbuf = null;
+      /* Canvas grain overlay — low-res buffer, pixel-stretched */
+      var canvas = document.getElementById("grain-canvas");
+      var ctx = canvas.getContext("2d");
+      var buffer = document.createElement("canvas");
+      var bctx = buffer.getContext("2d");
+      var pixel = 3;
 
-  function resize() {
-    var scale = 3;
-    w = Math.max(1, Math.ceil(window.innerWidth / scale));
-    h = Math.max(1, Math.ceil(window.innerHeight / scale));
-    canvas.width = w;
-    canvas.height = h;
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    buf = new Uint8ClampedArray(w * h * 4);
-  }
-  resize();
-  window.addEventListener("resize", function () { resize(); });
+      function resizeCanvas() {
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        buffer.width = Math.ceil(w / pixel);
+        buffer.height = Math.ceil(h / pixel);
+      }
 
-  var frame = 0;
-  function draw() {
-    frame++;
-    if (frame % 2 !== 0) {
-      requestAnimationFrame(draw);
-      return;
-    }
-    var i = 0, len = w * h * 4, v;
-    for (i = 0; i < len; i += 4) {
-      v = (Math.random() * 40) | 0;
-      buf[i] = buf[i + 1] = buf[i + 2] = v;
-      buf[i + 3] = 22 + ((Math.random() * 35) | 0);
-    }
-    if (!tbuf || tbuf.width !== w) {
-      tbuf = ctx.createImageData(w, h);
-    }
-    tbuf.data.set(buf);
-    ctx.putImageData(tbuf, 0, 0);
-    requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-})();
+      function drawGrain() {
+        var bw = buffer.width;
+        var bh = buffer.height;
+        var imageData = bctx.createImageData(bw, bh);
+        var data = imageData.data;
+        var len = bw * bh;
+
+        for (var i = 0, j = 0; i < len; i++) {
+          var v = (Math.random() * 255) | 0;
+          data[j++] = v;
+          data[j++] = v;
+          data[j++] = v;
+          data[j++] = (Math.random() * 38 + 12) | 0;
+        }
+
+        bctx.putImageData(imageData, 0, 0);
+        ctx.imageSmoothingEnabled = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawGrain);
+      }
+
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+      requestAnimationFrame(drawGrain);
+
+      /* Handle glitch shuffle on hover */
+      var handle = document.getElementById("handle-glitch");
+      var original = handle.getAttribute("data-text");
+      var pool = "01dcDC0xX_#@/\\{}[]|";
+      var glitchTimer = null;
+
+      function shuffle() {
+        var out = "";
+        for (var i = 0; i < original.length; i++) {
+          out += Math.random() > 0.35
+            ? pool[(Math.random() * pool.length) | 0]
+            : original[i];
+        }
+        handle.textContent = out;
+      }
+
+      function startGlitch() {
+        handle.classList.add("is-glitching");
+        if (glitchTimer) return;
+        glitchTimer = setInterval(shuffle, 45);
+      }
+
+      function stopGlitch() {
+        handle.classList.remove("is-glitching");
+        clearInterval(glitchTimer);
+        glitchTimer = null;
+        handle.textContent = original;
+      }
+
+      handle.addEventListener("mouseenter", startGlitch);
+      handle.addEventListener("mouseleave", stopGlitch);
+      handle.addEventListener("focus", startGlitch);
+      handle.addEventListener("blur", stopGlitch);
+
+      /* Hero STATIC — extra glitch burst (CSS anim + short pulse) */
+      var heroTitle = document.getElementById("hero-title");
+      var burstTimer = null;
+
+      function heroBurst() {
+        heroTitle.classList.add("is-burst");
+        clearTimeout(burstTimer);
+        burstTimer = setTimeout(function () {
+          heroTitle.classList.remove("is-burst");
+        }, 120);
+      }
+
+      heroBurst();
+      setInterval(heroBurst, 2400);
+
+      /* Theme toggle — default dark on first visit */
+      var themeKey = "0dc-theme";
+      var toggleBtn = document.getElementById("theme-toggle");
+      var stateEl = document.getElementById("theme-state");
+      var root = document.documentElement;
+
+      function applyTheme(theme) {
+        root.setAttribute("data-theme", theme);
+        localStorage.setItem(themeKey, theme);
+        var isDark = theme === "dark";
+        stateEl.textContent = isDark ? "DARK" : "LIGHT";
+        toggleBtn.setAttribute("aria-pressed", isDark ? "true" : "false");
+        toggleBtn.setAttribute(
+          "aria-label",
+          isDark ? "Zu Light Mode wechseln" : "Zu Dark Mode wechseln"
+        );
+      }
+
+      applyTheme(root.getAttribute("data-theme") || "dark");
+
+      toggleBtn.addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        applyTheme(next);
+      });
+    })();
   </script>
 </body>
 </html>
