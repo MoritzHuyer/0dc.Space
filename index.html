@@ -100,7 +100,7 @@
         <span class="theme-toggle__state" id="theme-state">DARK</span>
       </button>
       <p class="masthead__clock">
-        <span class="masthead__clock-label">UTC</span>
+        <span class="masthead__clock-label" id="tz-label">LOCAL</span>
         <time id="utc-clock" datetime="">--:--:--</time>
       </p>
     </div>
@@ -201,23 +201,41 @@
     (function () {
       "use strict";
 
-      /* UTC Clock */
+      /* Local device clock with visitor timezone label */
       var clockEl = document.getElementById("utc-clock");
+      var tzLabelEl = document.getElementById("tz-label");
 
       function pad(n) {
         return n < 10 ? "0" + n : String(n);
       }
 
+      function getTzLabel() {
+        try {
+          var parts = new Intl.DateTimeFormat(undefined, {
+            timeZoneName: "short"
+          }).formatToParts(new Date());
+          var tzPart = parts.find(function (p) { return p.type === "timeZoneName"; });
+          if (tzPart && tzPart.value) return tzPart.value.toUpperCase();
+        } catch (e) {
+          /* no-op fallback below */
+        }
+
+        var fallback = new Date().toString().match(/\(([^)]+)\)$/);
+        if (fallback && fallback[1]) return fallback[1].toUpperCase();
+        return "LOCAL";
+      }
+
       function tick() {
         var now = new Date();
-        var h = pad(now.getUTCHours());
-        var m = pad(now.getUTCMinutes());
-        var s = pad(now.getUTCSeconds());
+        var h = pad(now.getHours());
+        var m = pad(now.getMinutes());
+        var s = pad(now.getSeconds());
         var iso = now.toISOString();
         clockEl.textContent = h + ":" + m + ":" + s;
         clockEl.setAttribute("datetime", iso);
       }
 
+      tzLabelEl.textContent = getTzLabel();
       tick();
       setInterval(tick, 1000);
 
