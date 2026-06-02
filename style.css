@@ -760,10 +760,6 @@ iframe {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker__track {
-    animation: none;
-  }
-
   .hero__title.is-burst .hero__glitch-main,
   .hero__title.is-burst .hero__glitch--red,
   .hero__title.is-burst .hero__glitch--ghost {
